@@ -11,4 +11,4 @@ Back end for The recipe application. Stores user data and hashes passwords for e
 - ngix
 - SSL - certbot
 
-Domain: http://therecipe.make.com.ar/
+Domain: https://therecipe.make.com.ar/

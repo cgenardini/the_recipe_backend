@@ -11,15 +11,15 @@ const validateURL = (value, helpers) => {
 
 module.exports.validateRecipeItemBody = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).messages({
+    title: Joi.string().required().min(2).messages({
       "string.min": 'the minimum length of the "name" field is 2',
       "string.empty": 'the "name" field must be filled in',
     }),
-    imageUrl: Joi.string().required().custom(validateURL).messages({
+    image: Joi.string().required().custom(validateURL).messages({
       "string.empty": "the URL image field must be filled in",
       "string.uri": 'the "imageUrl" field must be a valid url',
     }),
-    id: Joi.number().required().messages({
+    recipeId: Joi.number().required().messages({
       "number.empty": "the id field must be filled in",
     }),
     summary: Joi.string().required().messages({
@@ -28,7 +28,7 @@ module.exports.validateRecipeItemBody = celebrate({
     analyzedInstructions: Joi.array().required().messages({
       "array.empty": "the array must be filled in",
     }),
-    source: Joi.string().required().messages({
+    sourceName: Joi.string().required().messages({
       "string.empty": "the source must be filled in",
     }),
   }),
@@ -65,6 +65,6 @@ module.exports.validateUserLogIn = celebrate({
 
 module.exports.validateItemId = celebrate({
   params: Joi.object().keys({
-    itemId: Joi.string().required().hex().length(24),
+    recipeId: Joi.string().required().hex().length(24),
   }),
 });

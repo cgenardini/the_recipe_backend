@@ -10,7 +10,7 @@ const { validateItemId } = require("../middlewares/validation");
 const userAuth = require("../middlewares/auth");
 
 router.get("/me", userAuth, getCurrentUser);
-router.post("/me/:itemId", userAuth, validateItemId, saveUserRecipe);
-router.delete("/me/:itemId", userAuth, validateItemId, removeUserRecipe);
+// router.post("/me/:recipeId", userAuth, validateItemId, saveUserRecipe);
+// router.delete("/me/:recipeId", userAuth, validateItemId, removeUserRecipe);
 
 module.exports = router;
