@@ -9,7 +9,7 @@ const {
 const { validateRecipeItemBody } = require("../middlewares/validation");
 const userAuth = require("../middlewares/auth");
 
-router.get("/", getRecipeItems);
+router.get("/", userAuth, getRecipeItems);
 router.post("/", validateRecipeItemBody, storeRecipeItems);
 router.post("/:recipeId", userAuth, saveRecipe);
 router.delete("/:recipeId", userAuth, removeSavedRecipe);

@@ -79,19 +79,15 @@ module.exports.saveRecipe = (req, res, next) => {
 module.exports.removeSavedRecipe = (req, res, next) => {
   const { recipeId } = req.params;
   const { _id } = req.user;
-  Recipe.findOne({ recipeId })
+  Recipe.findOneAndUpdate(
+    { recipeId, owners: _id },
+    { $pull: { owners: _id } },
+    { new: true }
+  )
     .then((recipe) => {
       if (!recipe) {
         next(new NotFoundError("item not found"));
       }
-      if (!recipe.owners.includes(_id)) {
-        next(new BadRequestError("item not saved"));
-      }
-
-      recipe.owners = recipe.owners.filter((ownerId) => {
-        return ownerId.toString() !== _id.toString();
-      });
-      recipe.save();
       return res.send(recipe);
     })
     .catch(next);
