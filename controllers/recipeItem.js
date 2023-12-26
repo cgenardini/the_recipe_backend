@@ -13,7 +13,7 @@ module.exports.storeRecipeItems = (req, res, next) => {
   const { title, image, recipeId, summary, sourceName, analyzedInstructions } =
     req.body;
 
-  Recipe.findOne({ id })
+  Recipe.findOne({ recipeId })
     .then((foundRecipe) => {
       if (foundRecipe) {
         return res.send(foundRecipe);
