@@ -25,15 +25,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     select: false,
   },
-  savedRecipes: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "recipe",
-    },
-  ],
 });
 
-userSchema.static.findUserByCredentials = function findUserByCredentials(
+userSchema.statics.findUserByCredentials = function findUserByCredentials(
   email,
   password
 ) {

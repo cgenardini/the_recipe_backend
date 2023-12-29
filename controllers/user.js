@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcryptjs");
-const Recipe = require("../models/recipeItem");
+
 const User = require("../models/user");
 
 const ConflictError = require("../utils/errors/conflictError");
@@ -49,7 +49,7 @@ module.exports.login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, secret, { expiredIn: "7d" });
+      const token = jwt.sign({ _id: user._id }, secret, { expiresIn: "7d" });
       res.send({ token });
     })
     .catch((err) => {
@@ -99,60 +99,6 @@ module.exports.editCurrentUser = (req, res, next) => {
       }
       if (err.name === "DocumentNotFoundError") {
         next(new NotFoundError("Document not found"));
-      } else next(err);
-    });
-};
-
-module.exports.saveUserRecipe = (req, res, next) => {
-  const { recipeId } = req.body;
-  const { _id } = req.user;
-
-  Recipe.findById(recipeId)
-    .then((recipe) => {
-      if (!recipe) {
-        throw new NotFoundError("recipe not found");
-      }
-      return User.findByIdAndUpdate(
-        { _id },
-        { $addToSet: { savedRecipes: recipeId } }
-      );
-    })
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError("user not found");
-      }
-      return res.send(user);
-    })
-    .catch((err) => {
-      if (err.name === "CastError") {
-        next(new BadRequestError("invalid data"));
-      } else next(err);
-    });
-};
-
-module.exports.removeUserRecipe = (req, res, next) => {
-  const { recipeId } = req.body;
-  const { _id } = req.user;
-
-  Recipe.findById(recipeId)
-    .then((recipe) => {
-      if (!recipe) {
-        throw new NotFoundError("recipe not found");
-      }
-      return User.findByIdAndUpdate(
-        { _id },
-        { $pull: { savedRecipes: recipeId } }
-      );
-    })
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError("user not found");
-      }
-      return res.send(user);
-    })
-    .catch((err) => {
-      if (err.name === "CastError") {
-        next(new BadRequestError("invalid data"));
       } else next(err);
     });
 };

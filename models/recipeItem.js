@@ -7,7 +7,7 @@ const recipeSchema = new mongoose.Schema({
     type: String,
     minLength: 2,
   },
-  imageUrl: {
+  image: {
     required: true,
     type: String,
     validate: {
@@ -17,7 +17,7 @@ const recipeSchema = new mongoose.Schema({
       message: "Please enter a valid url",
     },
   },
-  id: {
+  recipeId: {
     type: Number,
     unique: true,
   },
@@ -30,9 +30,15 @@ const recipeSchema = new mongoose.Schema({
     required: true,
   },
 
-  source: {
+  sourceName: {
     type: String,
   },
+  owners: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
 recipeSchema.index({ title: "text", summary: "text" });
