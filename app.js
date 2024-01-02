@@ -18,7 +18,7 @@ const {
 
 const { PORT = 3001 } = process.env;
 
-mongoose.connect(process.env.DB_URI || "mongodb://127.0.0.1:27017/the_recipe");
+mongoose.connect("mongodb://127.0.0.1:27017/the_recipe");
 
 const app = express();
 app.use(helmet());

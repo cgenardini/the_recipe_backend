@@ -18,6 +18,9 @@ module.exports.storeRecipeItems = (req, res, next) => {
       if (foundRecipe) {
         return res.send(foundRecipe);
       }
+      if (recipeId === null) {
+        next(new BadRequestError("recipeId null"));
+      }
 
       return Recipe.create({
         title,
@@ -42,9 +45,13 @@ module.exports.storeRecipeItems = (req, res, next) => {
 
 module.exports.getSavedRecipes = (req, res, next) => {
   const { _id } = req.user;
+
   Recipe.find({ owners: _id })
     .then((recipes) => {
-      res.set(recipes);
+      if (!recipes) {
+        res.send({ message: "no recipes saved" });
+      }
+      res.send(recipes);
     })
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -59,6 +66,7 @@ module.exports.getSavedRecipes = (req, res, next) => {
 module.exports.saveRecipe = (req, res, next) => {
   const { recipeId } = req.params;
   const { _id } = req.user;
+  console.log(recipeId);
   Recipe.findOne({ recipeId })
     .then((recipe) => {
       if (!recipe) {
